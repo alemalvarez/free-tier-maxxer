@@ -1,0 +1,21 @@
+{
+  "name": "free-tier-maxxer",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Free-tier usage vs limits across GitHub, PostHog, Langfuse, Supabase and Vercel. Local-first, read-only tokens. Exploration repo: feasibility checks + concept dashboard.",
+  "type": "module",
+  "license": "MIT",
+  "engines": { "node": ">=20.6" },
+  "scripts": {
+    "check": "node checks/all.mjs",
+    "check:github": "node --env-file=.env checks/github.mjs",
+    "check:posthog": "node --env-file=.env checks/posthog.mjs",
+    "check:langfuse": "node --env-file=.env checks/langfuse.mjs",
+    "check:supabase": "node --env-file=.env checks/supabase.mjs",
+    "check:vercel": "node --env-file=.env checks/vercel-token.mjs",
+    "check:series": "node --env-file=.env checks/series-api.mjs",
+    "vercel:parse": "node checks/vercel-ssr-parse.mjs",
+    "build": "node checks/build-concept.mjs",
+    "serve": "node checks/serve.mjs"
+  }
+}

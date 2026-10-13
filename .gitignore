@@ -1,0 +1,16 @@
+# secrets: tokens live only in .env (chmod 600)
+.env
+.env.*
+!.env.example
+
+# raw captures from your accounts (contain account ids, project names, usage rows). never commit.
+checks/out/
+
+# built from checks/out by `npm run build`; the committed sample lives in concept/sample/
+concept/data.js
+concept/series.js
+
+*.db
+node_modules/
+.playwright-mcp/
+.DS_Store
