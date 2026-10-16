@@ -7,7 +7,7 @@ Copy one of these into Claude Code, Codex, Cursor, Copilot or any agent that can
 ```
 Set up free-tier-maxxer for my side project.
 Read README.md and AGENTS.md in this repo first.
-1. Create .env from .env.example (chmod 600). Ask me which of GitHub, PostHog, Langfuse, Supabase and Vercel I use.
+1. Create .env from .env.example (chmod 600). Ask me which of GitHub, PostHog, Langfuse, Supabase, Vercel and Resend I use.
 2. For each one, tell me exactly which token to create (where, which read-only scopes, which .env variables). I will paste the values into .env myself; never ask me to paste a token into the chat and never print one.
 3. When I say .env is ready, verify the variables are non-empty without showing values, then run `npm run check` and explain any failures (which provider, which scope).
 4. If I use Vercel or Supabase, do the dashboard capture described in README ("Vercel and Supabase: the dashboard capture"). If you have a browser tool, open the login page, wait for me to log in, run the function from checks/browser/, and save the result to checks/out/. If you don't, give me the devtools steps and wait for the file.

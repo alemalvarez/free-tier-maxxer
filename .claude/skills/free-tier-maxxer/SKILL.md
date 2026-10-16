@@ -12,7 +12,7 @@ Arguments: none for a full setup; `refresh vercel`, `refresh supabase` or `refre
 ## Setup
 
 1. Confirm Node 20.6+ (`node --version`). If `.env` is missing, copy `.env.example` to `.env` and `chmod 600 .env`.
-2. Ask the user which of the five providers their project uses. For each one, give them the token recipe from the README table (where to create it, exact scopes, which `.env` variables to fill) and tell them to leave unused providers empty. Wait until they say the values are in `.env`.
+2. Ask the user which of the six providers their project uses. For each one, give them the token recipe from the README table (where to create it, exact scopes, which `.env` variables to fill) and tell them to leave unused providers empty. Wait until they say the values are in `.env`.
 3. Verify presence without revealing values, for example `rg -c '^GITHUB_TOKEN=.+' .env`. Placeholder values such as `github_pat_...` count as missing; say so.
 4. Run `npm run check`. Read the summary at the end. For a 401 or 403, name the provider and the scope from the README table and ask the user to fix the token. Exit code 2 from a script means its env is empty, which is expected for unused providers.
 5. If the user uses Vercel or Supabase, do the dashboard capture (next section).

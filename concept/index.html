@@ -182,7 +182,8 @@ const main = () => {
   const seriesFor = (p, m) => SX[`${p.id}/${m.key}`] ?? null;
 
   const derive = (p, m) => {
-    const start = new Date(p.period.start), end = new Date(p.period.end);
+    const per = m.period ?? p.period;
+    const start = new Date(per.start), end = new Date(per.end);
     const elapsed = Math.max(0, now - start), total = end - start;
     const timePct = Math.min(1, elapsed / total);
     const pct = m.limit ? m.used / m.limit : null;

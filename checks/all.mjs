@@ -10,7 +10,7 @@ for (const line of readFileSync(envFile, 'utf8').split('\n')) {
   const v = m[2].replace(/^["']|["']$/g, '');
   if (v && !v.endsWith('...')) env[m[1]] = v;
 }
-const scripts = ['github', 'posthog', 'langfuse', 'supabase', 'vercel-token', 'series-api'];
+const scripts = ['github', 'posthog', 'langfuse', 'supabase', 'vercel-token', 'resend', 'series-api'];
 const results = {};
 for (const s of scripts) {
   console.log(`\n=== checks/${s}.mjs`);

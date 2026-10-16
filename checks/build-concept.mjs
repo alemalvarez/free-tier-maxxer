@@ -158,6 +158,28 @@ const humanize = (k) => k.replace(/_/g, ' ').replace(/^\w/, (c) => c.toUpperCase
   } else notes.push('vercel: no captures (run checks/vercel-token.mjs, then the dashboard capture for usage)');
 }
 
+// ---------------- Resend (official: GET /usage, since 2026-10-01)
+{
+  const u = load('resend-usage'), dom = load('resend-domains'), met = load('resend-metrics');
+  if (u?.object === 'usage') {
+    const monthEnd = u.emails?.monthly?.resets_at;
+    const period = monthEnd ? { start: iso(Date.UTC(new Date(monthEnd).getUTCFullYear(), new Date(monthEnd).getUTCMonth() - 1, 1)), end: iso(monthEnd), anchor: 'api' } : calendarMonth();
+    const q = (key, label, obj, resets, note) => obj && obj.used != null ? { key, label, used: Number(obj.used), limit: obj.limit == null ? null : Number(obj.limit), unit: 'count', resets, ...(note ? { note } : {}) } : null;
+    const metrics = [
+      q('emails_monthly', 'Emails this month', u.emails?.monthly, true, 'sent + received'),
+      u.emails?.daily?.limit != null ? { ...q('emails_daily', 'Emails today (rolling 24 h)', u.emails.daily, true, `Sending pauses at the daily cap; resets ${String(u.emails.daily.resets_at).slice(0, 16).replace('T', ' ')} UTC`), period: { start: iso(new Date(u.emails.daily.resets_at).getTime() - 864e5), end: iso(u.emails.daily.resets_at), anchor: 'api' } } : null,
+      q('contacts', 'Contacts', u.contacts, false),
+      q('domains', 'Domains', u.domains, false),
+      q('segments', 'Segments', u.segments, false),
+      q('ai_credits', 'AI credits', u.ai_credits, true),
+      u.automation_runs ? { ...q('automation_runs', 'Automation runs', u.automation_runs, true), period: u.automation_runs.resets_at ? { start: period.start, end: iso(u.automation_runs.resets_at), anchor: 'api' } : undefined } : null,
+    ].filter(Boolean);
+    const names = (dom?.domains ?? []).map((d) => d.name).filter(Boolean);
+    providers.push({ id: 'resend', name: 'Resend', account: names.length ? names.join(', ') : 'team', plan: u.emails?.daily?.limit != null ? 'Free' : 'Paid', source: 'official', auth: 'API key (full access, see feasibility/resend.md)', period, metrics });
+    for (const r of met?.data ?? []) push('resend', 'emails_monthly', String(r.period).slice(0, 10), Number(r.sent ?? 0) + Number(r.received ?? 0));
+  } else notes.push('resend: no checks/out/resend-usage.json (run checks/resend.mjs)');
+}
+
 for (const n of notes) console.log('  ' + n);
 if (!providers.length) { console.log('No provider data yet: nothing written, the dashboard keeps showing the bundled sample. Run `npm run check` first.'); process.exit(0); }
 const project = process.env.FTM_PROJECT_NAME || load('supabase-projects')?.[0]?.name || 'my side project';

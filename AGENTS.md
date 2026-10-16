@@ -1,6 +1,6 @@
 # Instructions for coding agents working in this repository
 
-free-tier-maxxer shows free-tier usage against limits for GitHub, PostHog, Langfuse, Supabase and Vercel. This repo is the exploration stage: feasibility research, check scripts and a concept dashboard. The product brief for the real tool is `docs/initial-brief.md`. Read `README.md` first.
+free-tier-maxxer shows free-tier usage against limits for GitHub, PostHog, Langfuse, Supabase, Vercel and Resend. This repo is the exploration stage: feasibility research, check scripts and a concept dashboard. The product brief for the real tool is `docs/initial-brief.md`. Read `README.md` first.
 
 ## Rules that always apply
 

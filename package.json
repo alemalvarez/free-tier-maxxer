@@ -13,6 +13,7 @@
     "check:langfuse": "node --env-file=.env checks/langfuse.mjs",
     "check:supabase": "node --env-file=.env checks/supabase.mjs",
     "check:vercel": "node --env-file=.env checks/vercel-token.mjs",
+    "check:resend": "node --env-file=.env checks/resend.mjs",
     "check:series": "node --env-file=.env checks/series-api.mjs",
     "vercel:parse": "node checks/vercel-ssr-parse.mjs",
     "build": "node checks/build-concept.mjs",

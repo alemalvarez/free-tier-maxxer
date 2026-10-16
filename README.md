@@ -1,6 +1,6 @@
 # free-tier-maxxer
 
-One local dashboard for the free tiers behind your side project: how much of every limit you have used, how much of the billing period is left, and what runs out first. Covers GitHub, PostHog, Langfuse, Supabase and Vercel.
+One local dashboard for the free tiers behind your side project: how much of every limit you have used, how much of the billing period is left, and what runs out first. Covers GitHub, PostHog, Langfuse, Supabase, Vercel and Resend.
 
 ![Concept dashboard](concept/shot-light.png)
 
@@ -38,6 +38,7 @@ Every token is read-only. Create them with the minimum scope below; anything els
 | Langfuse | Project **public + secret key** (no read-only variant exists; keep it to one project) | Project Settings → API Keys. Host: `cloud.langfuse.com`, `us.cloud.langfuse.com` or `jp.cloud.langfuse.com` | Observations, root observations (used as the trace count) and scores, summed as units of the 50,000 Hobby allowance | Billing period: set `LANGFUSE_BILLING_ANCHOR_DAY` to the day of the month you signed up. Hobby caps the Metrics API at 100 requests/day; a full run uses 7 |
 | Supabase | Scoped personal access token with **projects_read** and **database_read** | supabase.com → Account → Access tokens | Project status (paused or not), database size, storage size, approximate MAU, all via read-only SQL | Egress, edge function invocations, realtime, log ingestion. Use the dashboard capture |
 | Vercel | Token scoped to your **team** (not a project) | vercel.com → Account → Tokens | Plan, billing cycle, build time per deployment | Everything else on Hobby: bandwidth, requests, invocations, CPU. Use the dashboard capture |
+| Resend | API key with permission **full access** (the only exception to read-only: Resend has no read-only key and `GET /usage` rejects send-only keys). Create one just for this tool and revoke it any time | resend.com → API Keys | Every quota in one call: emails per month and per day, contacts, domains, segments, AI credits, automation runs, with reset times. Daily history from the metrics endpoint | Nothing missing. Plan is inferred: a daily cap means Free |
 
 Each `checks/<provider>.mjs` prints what it got and saves the raw JSON under `checks/out/` (git-ignored). A 401 or 403 means the token or scope is wrong; the script says which call failed.
 
@@ -107,6 +108,7 @@ Everything unverified is marked `TODO(verify)` in the docs and scripts. The main
 - Langfuse and Supabase do not expose their billing anchor; set the anchor day in `.env` or the period is assumed to be the calendar month and labelled as such.
 - The raw unit of Vercel's `function_duration` meter is unverified; it is shown against the documented 360 GB-hour limit. `data_cache_writes` disagrees with the dashboard and is left out.
 - GitHub Packages and Windows/macOS Actions SKU names are taken from the docs and not seen live yet.
+- Resend's `GET /usage` is documented (October 2026) but not yet verified live here; see [feasibility/resend.md](feasibility/resend.md).
 - Supabase `network_transmit_bytes` from the monitoring endpoint may approximate egress for projects without a dashboard capture; not checked.
 - The dashboard captures are session-bound snapshots, not a live feed. Refresh them when you want fresh numbers.
 
